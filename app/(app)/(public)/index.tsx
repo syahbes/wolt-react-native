@@ -1,13 +1,39 @@
 import AppleAuthButton from '@/components/auth/AppleAuthButton';
 import GoogleAuthButton from '@/components/auth/GoogleAuthButton';
+import SmoothInfiniteScroll from '@/components/SmoothInfiniteScroll';
 import { Fonts } from '@/constants/theme';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Index() {
+  const openWebBrowser = () => {
+    Linking.openURL('http://www.wolt.com');
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.infiniteScrollContainer}></View>
+      <View style={styles.infiniteScrollContainer}>
+        <View>
+          <SmoothInfiniteScroll iconSet="set1" scrollDirection="down" />
+        </View>
+        <View>
+          <SmoothInfiniteScroll iconSet="set2" scrollDirection="up" />
+        </View>
+        <View>
+          <SmoothInfiniteScroll iconSet="set3" scrollDirection="down" />
+        </View>
+        <LinearGradient
+          colors={['transparent', '#fff']}
+          style={{
+            position: 'absolute',
+            height: 200,
+            left: 0,
+            bottom: 0,
+            right: 0,
+          }}
+        />
+      </View>
 
       <View style={styles.contentContainer}>
         <Image source={require('@/assets/images/wolt-logo.png')} style={styles.brandLogo} />
@@ -30,8 +56,16 @@ export default function Index() {
               <Text style={styles.otherButtonText}>Other options</Text>
             </TouchableOpacity>
           </Animated.View>
-
         </View>
+        <Animated.View style={styles.privacyContainer} entering={FadeInDown.delay(400)}>
+          <Text style={styles.privacyText}>
+            Please visit{' '}
+            <Text style={styles.privacyLink} onPress={openWebBrowser}>
+              Wolt Privacy Statement
+            </Text>{' '}
+            to learn about personal data pprocessing at Wolt
+          </Text>
+        </Animated.View>
       </View>
     </View>
   );
@@ -78,8 +112,28 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
   },
+  privacyContainer: {
+    marginTop: 30,
+    paddingHorizontal: 20,
+  },
+  privacyText: {
+    fontSize: 12,
+    color: '#999',
+    textAlign: 'center',
+    lineHeight: 18,
+  },
+  privacyLink: {
+    color: '#4285F4',
+    textDecorationLine: 'underline',
+  },
 
   infiniteScrollContainer: {
     flex: 0.8,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 4,
+    position: 'relative',
+    overflow: 'hidden',
   },
 });
