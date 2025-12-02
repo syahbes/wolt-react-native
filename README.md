@@ -44,3 +44,5 @@ const RootNav = () => {
 };
 
 export default RootNav;
+
+persist
