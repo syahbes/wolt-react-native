@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 17,
     borderRadius: 12,
-    gap: 4,
+    gap: 8,
   },
   googleButtonText: {
     color: '#fff',
