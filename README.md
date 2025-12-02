@@ -46,3 +46,5 @@ const RootNav = () => {
 export default RootNav;
 
 persist
+
+in profile header to ios native when scroll automatic
