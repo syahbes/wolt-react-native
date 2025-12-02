@@ -1,0 +1,15 @@
+import useUserStore from '@/hooks/use-userstore';
+import { Button, Text, View } from 'react-native';
+
+const Page = () => {
+  const { setIsGuest } = useUserStore();
+
+  return (
+    <View>
+      <Text>Inside page</Text>
+      <Button title="Log out" onPress={() => setIsGuest(false)} />
+    </View>
+  );
+};
+
+export default Page;

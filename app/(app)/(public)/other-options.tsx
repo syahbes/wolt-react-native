@@ -2,6 +2,7 @@ import AppleAuthButton from '@/components/auth/AppleAuthButton';
 import FacebookAuthButton from '@/components/auth/FacebookAuthButton';
 import GoogleAuthButton from '@/components/auth/GoogleAuthButton';
 import { Colors, Fonts } from '@/constants/theme';
+import useUserStore from '@/hooks/use-userstore';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link, useRouter } from 'expo-router';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
@@ -9,6 +10,12 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const Page = () => {
   const router = useRouter();
+  const { setIsGuest } = useUserStore();
+
+  const continueAsGuest = () => {
+    setIsGuest(true);
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.closeBtn} onPress={() => router.dismiss()}>
@@ -27,7 +34,7 @@ const Page = () => {
           <FacebookAuthButton />
         </Animated.View>
         <Animated.View entering={FadeInDown.delay(400)}>
-          <TouchableOpacity style={styles.otherButton}>
+          <TouchableOpacity style={styles.otherButton} onPress={continueAsGuest}>
             <Text style={styles.otherButtonText}>Continu as a guest</Text>
           </TouchableOpacity>
         </Animated.View>

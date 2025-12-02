@@ -13,3 +13,5 @@ const useUserStore = create<UserStore>()((set) => ({
   setIsGuest: (isGuest: boolean) => set({ isGuest }),
   setUser: (user: any) => set({ user }),
 }));
+
+export default useUserStore;
