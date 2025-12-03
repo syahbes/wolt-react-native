@@ -48,3 +48,14 @@ export default RootNav;
 persist
 
 in profile header to ios native when scroll automatic
+
+top
+
+  const insets = useSafeAreaInsets();
+  return (
+    <View style={styles.container}>
+      <Animated.ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingTop: insets.top + 60 }}>
+
+
+
+    borderWidth: StyleSheet.hairlineWidth
