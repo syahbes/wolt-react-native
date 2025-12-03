@@ -13,6 +13,15 @@ const RestaurantList = () => {
     );
   }
 
+  if (error) {
+    return (
+      <View style={{ padding: 16, alignItems: 'center' }}>
+        <Text style={{ color: Colors.dark, marginBottom: 8 }}>Failed to load restaurants</Text>
+        <Text style={{ color: Colors.muted }}>{error instanceof Error ? error.message : 'Please try again later'}</Text>
+      </View>
+    );
+  }
+
   return (
     <>
       {restaurants?.map((item) => (
@@ -85,4 +94,3 @@ const styles = StyleSheet.create({
   },
 });
 export default RestaurantList;
-

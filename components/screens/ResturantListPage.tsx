@@ -5,11 +5,14 @@ import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Fonts } from '@/constants/theme';
 
+const HEADER_HEIGHT = 60;
+
+
 const ResturantListPage = () => {
   const insets = useSafeAreaInsets();
   return (
     <View style={styles.container}>
-      <Animated.ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingTop: insets.top + 60 }}>
+      <Animated.ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingTop: insets.top + HEADER_HEIGHT }}>
         <Text style={styles.pageTitle}>Resturants</Text>
         <CategoryList />
         <Text style={styles.allRestaurantsTitle}>All Resturants</Text>
