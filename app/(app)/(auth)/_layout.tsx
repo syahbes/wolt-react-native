@@ -20,8 +20,30 @@ const Layout = () => {
           headerShadowVisible: false,
           sheetCornerRadius: Platform.OS === 'ios' ? 16 : undefined,
           sheetGrabberVisible: Platform.OS === 'ios' ? true : false,
-          headerBackVisible:false,
+          headerBackVisible: false,
           animation: Platform.OS === 'android' ? 'slide_from_bottom' : undefined,
+          headerLeft: () => null,
+          headerRight: () => (
+            <TouchableOpacity style={{ padding: 4, borderRadius: 20, backgroundColor: Colors.light }} onPress={() => router.dismiss()}>
+              <Ionicons name="close-sharp" size={28} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="(modal)/filter"
+        options={{
+          presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
+          sheetAllowedDetents: Platform.OS === 'ios' ? [0.7] : undefined,
+          title: '',
+          headerShadowVisible: false,
+          sheetCornerRadius: Platform.OS === 'ios' ? 16 : undefined,
+          sheetGrabberVisible: Platform.OS === 'ios' ? true : false,
+          headerBackVisible: false,
+          animation: Platform.OS === 'android' ? 'slide_from_bottom' : undefined,
+          contentStyle: {
+            backgroundColor: '#fff',
+          },
           headerLeft: () => null,
           headerRight: () => (
             <TouchableOpacity style={{ padding: 4, borderRadius: 20, backgroundColor: Colors.light }} onPress={() => router.dismiss()}>

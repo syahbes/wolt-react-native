@@ -87,3 +87,7 @@ top
 
     borderWidth: StyleSheet.hairlineWidth
 ```
+
+Animated header
+
+const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {

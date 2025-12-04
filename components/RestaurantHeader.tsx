@@ -2,20 +2,48 @@ import { Colors } from '@/constants/theme';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link } from 'expo-router';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Animated, { SharedValue } from 'react-native-reanimated';
+import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface RestaurantHeaderProps {
   title: string;
   scrollOffset: SharedValue<number>;
 }
+const SCROLL_THRESHOLD = 60;
 
 const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
   const insets = useSafeAreaInsets();
+
+  const header1Style = useAnimatedStyle(() => {
+    const opacity = interpolate(scrollOffset.value, [0, SCROLL_THRESHOLD * 0.6], [1, 0], Extrapolation.CLAMP);
+    const translateY = interpolate(scrollOffset.value, [0, SCROLL_THRESHOLD * 0.6], [1, -10], Extrapolation.CLAMP);
+    return {
+      opacity,
+      transform: [{ translateY }],
+    };
+  });
+
+  const header2Style = useAnimatedStyle(() => {
+    const opacity = interpolate(scrollOffset.value, [SCROLL_THRESHOLD * 0.3, SCROLL_THRESHOLD], [0, 1], Extrapolation.CLAMP);
+    const translateY = interpolate(scrollOffset.value, [SCROLL_THRESHOLD * 0.3, SCROLL_THRESHOLD], [-10, 0], Extrapolation.CLAMP);
+    return {
+      opacity,
+      transform: [{ translateY }],
+    };
+  });
+
+  const shadowStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(scrollOffset.value, [0, SCROLL_THRESHOLD], [0, 1], Extrapolation.CLAMP);
+    return {
+      shadowOpacity: opacity * 0.1,
+      elevation: opacity * 4,
+    };
+  });
+
   return (
-    <Animated.View style={[styles.headerContainer, { paddingTop: insets.top }]}>
+    <Animated.View style={[styles.headerContainer, shadowStyle, { paddingTop: insets.top }]}>
       {/* Header 1 */}
-      <Animated.View style={[styles.header1]}>
+      <Animated.View style={[styles.header1, header1Style]}>
         <Link href={'/(app)/(auth)/(modal)/location'} asChild>
           <TouchableOpacity style={styles.locationButton}>
             <View style={styles.locationButtonIcon}>
@@ -26,9 +54,11 @@ const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
           </TouchableOpacity>
         </Link>
         <View style={styles.rightIcons}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Ionicons name="filter" size={20} />
-          </TouchableOpacity>
+          <Link href={'/(app)/(auth)/(modal)/filter'} asChild>
+            <TouchableOpacity style={styles.iconButton}>
+              <Ionicons name="filter" size={20} />
+            </TouchableOpacity>
+          </Link>
           <TouchableOpacity style={styles.iconButton}>
             <Ionicons name="map-outline" size={20} />
           </TouchableOpacity>
@@ -36,22 +66,25 @@ const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
       </Animated.View>
 
       {/* Header 2 */}
-      {/*   <Animated.View style={[styles.header2]}> */}
-      {/*     <View style={styles.centerContent}> */}
-      {/*       <Text style={styles.titleSmall}>{title}</Text> */}
-      {/**/}
-      {/*       <TouchableOpacity style={styles.locationSmall}> */}
-      {/*         <Text style={styles.locationSmallText}>Stringy</Text> */}
-      {/*         <Ionicons name="chevron-down" size={14} /> */}
-      {/*       </TouchableOpacity> */}
-      {/*     </View> */}
-      {/**/}
-      {/*     <View style={styles.rightIcons}> */}
-      {/*       <TouchableOpacity style={styles.iconButton}> */}
-      {/*         <Ionicons name="filter" size={20} /> */}
-      {/*       </TouchableOpacity> */}
-      {/*     </View> */}
-      {/*   </Animated.View> */}
+      <Animated.View style={[styles.header2, header2Style]}>
+        <View style={styles.centerContent}>
+          <Text style={styles.titleSmall}>{title}</Text>
+          <Link href={'/(app)/(auth)/(modal)/location'} asChild>
+            <TouchableOpacity style={styles.locationSmall}>
+              <Text style={styles.locationSmallText}>Stringy</Text>
+              <Ionicons name="chevron-down" size={14} />
+            </TouchableOpacity>
+          </Link>
+        </View>
+
+        <View style={styles.rightIcons}>
+          <Link href={'/(app)/(auth)/(modal)/filter'} asChild>
+            <TouchableOpacity style={styles.iconButton}>
+              <Ionicons name="filter" size={20} />
+            </TouchableOpacity>
+          </Link>
+        </View>
+      </Animated.View>
     </Animated.View>
   );
 };
