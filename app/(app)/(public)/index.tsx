@@ -1,7 +1,7 @@
 import AppleAuthButton from '@/components/auth/AppleAuthButton';
 import GoogleAuthButton from '@/components/auth/GoogleAuthButton';
 import SmoothInfiniteScroll from '@/components/SmoothInfiniteScroll';
-import { Fonts } from '@/constants/theme';
+import { Colors, Fonts } from '@/constants/theme';
 import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   otherButtonText: {
-    color: '#666',
+    color: Colors.muted,
     fontSize: 18,
     fontWeight: '600',
   },
