@@ -95,8 +95,7 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     zIndex: 100,
-    backgroundColor: '#fff',
-    // boxShadow: '0px 2px 4px -2px rgba(0,0,0, 0.2)',
+    backgroundColor: Colors.background,
   },
   header1: {
     paddingHorizontal: 16,

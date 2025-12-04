@@ -42,7 +42,7 @@ const Layout = () => {
           headerBackVisible: false,
           animation: Platform.OS === 'android' ? 'slide_from_bottom' : undefined,
           contentStyle: {
-            backgroundColor: '#fff',
+            backgroundColor: Colors.background,
           },
           headerLeft: () => null,
           headerRight: () => (
