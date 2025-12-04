@@ -90,4 +90,5 @@ top
 
 Animated header
 
+
 const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
