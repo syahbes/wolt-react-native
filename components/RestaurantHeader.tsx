@@ -1,8 +1,8 @@
 import { Colors } from '@/constants/theme';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link } from 'expo-router';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedProps, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface RestaurantHeaderProps {
@@ -13,6 +13,25 @@ const SCROLL_THRESHOLD = 60;
 
 const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
   const insets = useSafeAreaInsets();
+
+  // Derived values for pointer events with proper typing
+// Derived values for pointer events - use the string literal union type
+  const header1PointerEvents = useDerivedValue<'none' | 'auto' | 'box-none' | 'box-only'>(() => {
+    return scrollOffset.value > SCROLL_THRESHOLD * 0.6 ? 'none' : 'auto';
+  });
+
+  const header2PointerEvents = useDerivedValue<'none' | 'auto' | 'box-none' | 'box-only'>(() => {
+    return scrollOffset.value < SCROLL_THRESHOLD * 0.3 ? 'none' : 'auto';
+  });
+
+  const header1AnimatedProps = useAnimatedProps(() => ({
+    pointerEvents: header1PointerEvents.value,
+  }));
+
+  const header2AnimatedProps = useAnimatedProps(() => ({
+    pointerEvents: header2PointerEvents.value,
+  }));
+
 
   const header1Style = useAnimatedStyle(() => {
     const opacity = interpolate(scrollOffset.value, [0, SCROLL_THRESHOLD * 0.6], [1, 0], Extrapolation.CLAMP);
@@ -43,8 +62,10 @@ const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
   return (
     <Animated.View style={[styles.headerContainer, shadowStyle, { paddingTop: insets.top }]}>
       {/* Header 1 */}
-      <Animated.View style={[styles.header1, header1Style]}>
-        <Link href={'/(app)/(auth)/(modal)/location'} asChild>
+      <Animated.View style={[styles.header1, header1Style]}
+              animatedProps={header1AnimatedProps}
+      >
+          <Link href={'/(app)/(auth)/(modal)/location'} asChild>
           <TouchableOpacity style={styles.locationButton}>
             <View style={styles.locationButtonIcon}>
               <Ionicons name="business-outline" size={16} />
@@ -59,14 +80,18 @@ const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
               <Ionicons name="filter" size={20} />
             </TouchableOpacity>
           </Link>
+          <Link href={'/(app)/(auth)/(modal)/map'} asChild>
           <TouchableOpacity style={styles.iconButton}>
             <Ionicons name="map-outline" size={20} />
           </TouchableOpacity>
+          </Link>
         </View>
       </Animated.View>
 
       {/* Header 2 */}
-      <Animated.View style={[styles.header2, header2Style]}>
+      <Animated.View style={[styles.header2, header2Style]}
+              animatedProps={header2AnimatedProps}
+      >
         <View style={styles.centerContent}>
           <Text style={styles.titleSmall}>{title}</Text>
           <Link href={'/(app)/(auth)/(modal)/location'} asChild>

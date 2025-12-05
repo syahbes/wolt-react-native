@@ -92,3 +92,7 @@ Animated header
 
 
 const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
+
+disable pointer events
+
+  pointerEvents={scrollOffset.value < SCROLL_THRESHOLD * 0.3 ? 'none' : 'auto'}
