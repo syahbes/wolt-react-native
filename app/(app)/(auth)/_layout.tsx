@@ -2,7 +2,7 @@ import { Stack } from '@/components/Stack';
 import { Colors } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { TouchableOpacity, Platform } from 'react-native';
+import { Platform, TouchableOpacity } from 'react-native';
 // import Transition from 'react-native-screen-transitions';
 
 const Layout = () => {
@@ -10,6 +10,7 @@ const Layout = () => {
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(modal)/map" options={{}} />
 
       <Stack.Screen
         name="(modal)/location"

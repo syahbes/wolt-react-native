@@ -21,7 +21,6 @@ const Layout = () => {
           headerShadowVisible: false,
           sheetAllowedDetents: [0.6],
           sheetCornerRadius: 16,
-          
         }}
       />
     </Stack>
