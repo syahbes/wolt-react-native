@@ -3,38 +3,74 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import Animated, { SharedValue } from 'react-native-reanimated';
+import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-interface RestaurantDetailsHeaderProps {
+
+interface RestaurantHeaderProps {
   scrollOffset: SharedValue<number>;
 }
 
 const SCROLL_THRESHOLD_START = 50;
 const SCROLL_THRESHOLD_END = 80;
 
-const RestaurantDetailsHeader = ({ scrollOffset }: RestaurantDetailsHeaderProps) => {
+const RestaurantDetailsHeader = ({ scrollOffset }: RestaurantHeaderProps) => {
   const insets = useSafeAreaInsets();
   const router = useRouter();
 
+  const headerStyle = useAnimatedStyle(() => {
+    const backgroundOpacity = interpolate(scrollOffset.value, [SCROLL_THRESHOLD_START, SCROLL_THRESHOLD_END], [0, 1], Extrapolation.CLAMP);
+
+    const shadowOpacity = interpolate(scrollOffset.value, [SCROLL_THRESHOLD_START, SCROLL_THRESHOLD_END], [0, 0.1], Extrapolation.CLAMP);
+
+    return {
+      backgroundColor: `rgba(255,255,255, ${backgroundOpacity})`,
+      shadowOpacity,
+    };
+  });
+
+  const searchBarStyle = useAnimatedStyle(() => {
+    const backgroundOpacity = interpolate(scrollOffset.value, [0, SCROLL_THRESHOLD_START], [0.9, 1], Extrapolation.CLAMP);
+
+    return {
+      backgroundColor: `rgba(230, 230, 230, ${backgroundOpacity})`,
+    };
+  });
+
+  const buttonStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(scrollOffset.value, [0, SCROLL_THRESHOLD_END], [1, 0], Extrapolation.CLAMP);
+
+    return {
+      opacity,
+    };
+  });
+
+  const buttonStyle2 = useAnimatedStyle(() => {
+    const opacity = interpolate(scrollOffset.value, [SCROLL_THRESHOLD_START * 0.3, SCROLL_THRESHOLD_END], [0, 1], Extrapolation.CLAMP);
+
+    return {
+      opacity,
+    };
+  });
+
   return (
-    <Animated.View style={[styles.headerContainer, { paddingTop: insets.top }]}>
+    <Animated.View style={[styles.headerContainer, headerStyle, { paddingTop: insets.top }]}>
       <View style={[styles.headerContent]}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={25} />
         </TouchableOpacity>
 
-        <Animated.View style={[styles.searchBar]}>
-          <Ionicons name="search" size={20} color={Colors.light} />
-          <TextInput placeholder="Search" placeholderTextColor={Colors.light} />
+        <Animated.View style={[styles.searchBar, searchBarStyle]}>
+          <Ionicons name="search" size={20} color={Colors.muted} />
+          <TextInput placeholder="Search" placeholderTextColor={Colors.muted} style={{ color: Colors.dark, fontSize: 15 }} />
         </Animated.View>
 
         <View style={{ width: 40, height: 40 }} />
 
-        <Animated.View style={[styles.iconButton]}>
+        <Animated.View style={[styles.iconButton, buttonStyle]}>
           <Ionicons name="heart-outline" size={24} />
         </Animated.View>
 
-        <Animated.View style={[styles.iconButton]}>
+        <Animated.View style={[styles.iconButton, buttonStyle2]}>
           <Ionicons name="ellipsis-horizontal" size={24} />
         </Animated.View>
       </View>

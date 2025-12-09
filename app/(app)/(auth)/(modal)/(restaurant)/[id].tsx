@@ -75,7 +75,9 @@ const Page = () => {
     <View style={styles.container}>
       <Animated.Image resizeMode={'cover'} source={restaurant.image!} style={[styles.backgroundImage, parallaxStyle]} />
       <Animated.View style={[styles.whiteOverlay, overlayStyle]} />
-      <RestaurantDetailsHeader scrollOffset={scrollOffset} />
+      <View style={{ zIndex: 10 }}>
+        <RestaurantDetailsHeader scrollOffset={scrollOffset} />
+      </View>
       <AnimatedSectionList
         ref={sectionListRef}
         sections={sections}
