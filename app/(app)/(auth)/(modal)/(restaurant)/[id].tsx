@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
 import { ActivityIndicator, Dimensions, Image, ScrollView, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { useSharedValue } from 'react-native-reanimated';
+import Animated, { Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 const { width } = Dimensions.get('window');
@@ -34,6 +34,27 @@ const Page = () => {
     data: category.dishes,
   }));
 
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollOffset.value = event.contentOffset.y;
+    },
+  });
+
+  const parallaxStyle = useAnimatedStyle(() => {
+    const scale = interpolate(scrollOffset.value, [-100, 0], [1.5, 1], Extrapolation.CLAMP);
+    const translateY = interpolate(scrollOffset.value, [0, 400], [0, -150], Extrapolation.CLAMP);
+    return {
+      transform: [{ scale }, { translateY }],
+    };
+  });
+  const overlayStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(scrollOffset.value, [0, 70], [0, 1], Extrapolation.CLAMP);
+
+    return {
+      opacity,
+    };
+  });
+
   if (restaurantLoading || menuLoading) {
     return (
       <View>
@@ -51,10 +72,15 @@ const Page = () => {
 
   return (
     <View style={styles.container}>
-      <Animated.Image resizeMode={'cover'} source={restaurant.image!} style={[styles.backgroundImage]} />
+      <Animated.Image resizeMode={'cover'} source={restaurant.image!} style={[styles.backgroundImage, parallaxStyle]} />
+      <Animated.View style={[styles.whiteOverlay, overlayStyle]} />
       <AnimatedSectionList
         ref={sectionListRef}
         sections={sections}
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+        showsVerticalScrollIndicator={false}
+        stickySectionHeadersEnabled={false}
         renderSectionHeader={({ section }: { section: any }) => (
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>{section.title}</Text>
@@ -128,6 +154,14 @@ const styles = StyleSheet.create({
     right: 0,
     width,
     height: IMAGE_HEIGHT,
+  },
+  whiteOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: IMAGE_HEIGHT,
+    backgroundColor: Colors.background,
   },
   sectionHeader: {
     padding: 16,
