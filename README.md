@@ -9,6 +9,7 @@ bun install
 notes:
 
 theme js
+
 ```
 export const Colors = {
   background: '#fff',
@@ -29,24 +30,23 @@ export const Fonts = {
 
 ```
 
-
 fonts from consts
 animation with reanimated
 
 instead of bottom modal:
-      <Stack.Screen
-        name="other-options"
-        options={{
+<Stack.Screen
+name="other-options"
+options={{
           headerShown: false,
           presentation: 'formSheet',
           title: '',
           headerShadowVisible: false,
           sheetAllowedDetents: [0.6]
         }}
-      />
-
+/>
 
 Protected Stack:
+
 ```
 import useUserStore from '@/hooks/use-userstore';
 import { Stack } from 'expo-router';
@@ -75,6 +75,7 @@ persist zustand store
 in profile header to ios native when scroll automatic
 
 padding top :
+
 ```
 top
 
@@ -90,9 +91,12 @@ top
 
 Animated header
 
-
 const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
 
 disable pointer events
 
-  pointerEvents={scrollOffset.value < SCROLL_THRESHOLD * 0.3 ? 'none' : 'auto'}
+pointerEvents={scrollOffset.value < SCROLL_THRESHOLD \* 0.3 ? 'none' : 'auto'}
+
+ParallexStyle image scroll
+
+https://icons.expo.app

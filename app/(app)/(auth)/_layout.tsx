@@ -3,14 +3,26 @@ import { Colors } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { Platform, TouchableOpacity } from 'react-native';
-// import Transition from 'react-native-screen-transitions';
+import Transition from 'react-native-screen-transitions';
 
 const Layout = () => {
   const router = useRouter();
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="(modal)/map" options={{}} />
+      <Stack.Screen
+        name="(modal)/(restaurant)/[id]"
+        options={{
+          ...Transition.presets.DraggableCard(),
+        }}
+      />
+
+      <Stack.Screen
+        name="(modal)/map"
+        options={{
+          ...Transition.presets.SharedAppleMusic(),
+        }}
+      />
 
       <Stack.Screen
         name="(modal)/location"

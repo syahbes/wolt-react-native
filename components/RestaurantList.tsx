@@ -1,6 +1,7 @@
 import { Colors } from '@/constants/theme';
 import { useRestaurants } from '@/hooks/useRestaurants';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Link } from 'expo-router';
 import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const RestaurantList = () => {
@@ -26,7 +27,7 @@ const RestaurantList = () => {
     <>
       {restaurants?.map((item) => (
         <View key={item.id}>
-          {/* <Link href={`/(modal)/(restaurant)/${item.id}`} asChild> */}
+          <Link href={`/(modal)/(restaurant)/${item.id}`} asChild>
           <TouchableOpacity style={styles.card}>
             <Image source={item.image!} style={styles.image} />
             <View style={styles.info}>
@@ -44,7 +45,7 @@ const RestaurantList = () => {
               <Ionicons name="happy-outline" size={16} color={Colors.muted} />
             </View>
           </TouchableOpacity>
-          {/* </Link> */}
+          </Link>
         </View>
       ))}
     </>
