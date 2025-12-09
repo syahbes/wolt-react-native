@@ -1,4 +1,5 @@
 import { MenuItem } from '@/components/MenuItem';
+import RestaurantDetailsHeader from '@/components/RestaurantDetailsHeader';
 import { Colors } from '@/constants/theme';
 import type { Dish } from '@/data/restaurant_menu';
 import { useMenu } from '@/hooks/useMenu';
@@ -74,6 +75,7 @@ const Page = () => {
     <View style={styles.container}>
       <Animated.Image resizeMode={'cover'} source={restaurant.image!} style={[styles.backgroundImage, parallaxStyle]} />
       <Animated.View style={[styles.whiteOverlay, overlayStyle]} />
+      <RestaurantDetailsHeader scrollOffset={scrollOffset} />
       <AnimatedSectionList
         ref={sectionListRef}
         sections={sections}
