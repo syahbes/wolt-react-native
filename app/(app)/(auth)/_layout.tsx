@@ -65,6 +65,18 @@ const Layout = () => {
           ),
         }}
       />
+      <Stack.Screen
+        name="(modal)/(menu)/[id]"
+        options={{
+          headerShown: false,
+          presentation: 'formSheet',
+          title: '',
+          headerShadowVisible: false,
+          sheetAllowedDetents: [0.95],
+          sheetCornerRadius: 16,
+          sheetGrabberVisible: true,
+        }}
+      />
     </Stack>
   );
 };
