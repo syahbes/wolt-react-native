@@ -1,8 +1,8 @@
 import { Colors } from '@/constants/theme';
+// import { Button, ContextMenu, Host } from '@expo/ui/swift-ui';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -61,7 +61,7 @@ const RestaurantDetailsHeader = ({ scrollOffset }: RestaurantHeaderProps) => {
 
         <Animated.View style={[styles.searchBar, searchBarStyle]}>
           <Ionicons name="search" size={20} color={Colors.muted} />
-          <TextInput placeholder="Search" placeholderTextColor={Colors.muted} style={{ color: Colors.dark, fontSize: 15 }} />
+          <TextInput style={{ fontSize: 15 }} placeholder="Search" placeholderTextColor={Colors.muted} />
         </Animated.View>
 
         <View style={{ width: 40, height: 40 }} />
@@ -72,6 +72,20 @@ const RestaurantDetailsHeader = ({ scrollOffset }: RestaurantHeaderProps) => {
 
         <Animated.View style={[styles.iconButton, buttonStyle2]}>
           <Ionicons name="ellipsis-horizontal" size={24} />
+          {/* <Host matchContents> */}
+          {/*   <ContextMenu> */}
+          {/*     <ContextMenu.Items> */}
+          {/*       <Button systemImage="info.circle.fill" onPress={() => console.log('Pressed1')}> */}
+          {/*         More info */}
+          {/*       </Button> */}
+          {/*       <Button systemImage="heart">Add to favorites</Button> */}
+          {/*       <Button systemImage="square.and.arrow.up">Share venue</Button> */}
+          {/*     </ContextMenu.Items> */}
+          {/*     <ContextMenu.Trigger> */}
+          {/*       <Button systemImage="ellipsis" color={Colors.dark} /> */}
+          {/*     </ContextMenu.Trigger> */}
+          {/*   </ContextMenu> */}
+          {/* </Host> */}
         </Animated.View>
       </View>
     </Animated.View>
@@ -108,11 +122,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: 12,
-    // paddingVertical: 8,
+    paddingVertical: 10,
     borderRadius: 20,
     gap: 8,
-    // temp
-    backgroundColor: '#fff',
   },
   iconButton: {
     position: 'absolute',
