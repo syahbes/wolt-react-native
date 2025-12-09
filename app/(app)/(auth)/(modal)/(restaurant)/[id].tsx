@@ -6,13 +6,16 @@ import { useMenu } from '@/hooks/useMenu';
 import { useRestaurant } from '@/hooks/useRestaurants';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { ActivityIndicator, Dimensions, Image, ScrollView, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
+
 const { width } = Dimensions.get('window');
 const IMAGE_HEIGHT = 300;
+const STICKY_THRESHOLD_START = 260;
+const STICKY_THRESHOLD_END = 320;
 
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList<Dish>);
 
@@ -74,7 +77,26 @@ const Page = () => {
     });
   };
 
-  const onViewableItemChange = useRef(({ viewableItems }: any) => {}).current;
+  const onViewableItemsChanged = useCallback(
+    ({ viewableItems }: any) => {
+      if (viewableItems.length > 0) {
+        const firstVisibleSection = viewableItems[0].section;
+        const sectionIndex = sections.findIndex((s) => s.title === firstVisibleSection.title);
+        if (sectionIndex !== -1 && sectionIndex !== activeCategory) {
+          setActiveCategory(sectionIndex);
+          scrollCategoryTabIntoView(sectionIndex);
+        }
+      }
+    },
+    [sections, activeCategory]
+  );
+
+  const stickyTabsStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(scrollOffset.value, [STICKY_THRESHOLD_START, STICKY_THRESHOLD_END], [0, 1], Extrapolation.CLAMP);
+    return {
+      opacity,
+    };
+  });
 
   if (restaurantLoading || menuLoading) {
     return (
@@ -99,8 +121,8 @@ const Page = () => {
         <RestaurantDetailsHeader scrollOffset={scrollOffset} />
       </View>
 
-      <Animated.View style={[styles.stickyTabsOverlay, { top: insets.top + 64 }]}>
-        <View style={{}}>
+      <Animated.View style={[styles.stickyTabsOverlay, stickyTabsStyle, { top: insets.top + 64 }]}>
+        <View style={styles.categoryTabsContainer}>
           <ScrollView horizontal ref={categoryScrollRef} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoryTabs}>
             {menu?.map((category, index) => (
               <TouchableOpacity
@@ -122,7 +144,7 @@ const Page = () => {
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
         stickySectionHeadersEnabled={false}
-        onViewableItemsChanged={onViewableItemChange}
+        onViewableItemsChanged={onViewableItemsChanged}
         renderSectionHeader={({ section }: { section: any }) => (
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>{section.title}</Text>
