@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: 12,
-    paddingVertical: 10,
+    // paddingVertical: 10,
     borderRadius: 20,
     gap: 8,
   },
