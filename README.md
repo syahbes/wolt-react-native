@@ -101,7 +101,7 @@ ParallexStyle image scroll
 
 https://icons.expo.app
 
+<Reanimated.View style={animatedStyle}>
+<ReanimatedSwipeable
 
-
- <Reanimated.View style={animatedStyle}>
-      <ReanimatedSwipeable
+do Haptic on JS thread and not UI import { scheduleOnRN } from 'react-native-worklets';

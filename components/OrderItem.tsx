@@ -4,17 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useRef } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import ReanimatedSwipeable, {
-  SwipeableMethods,
-} from 'react-native-gesture-handler/ReanimatedSwipeable';
-import Reanimated, {
-  Easing,
-  SharedValue,
-  useAnimatedReaction,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import ReanimatedSwipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Reanimated, { Easing, SharedValue, useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
 interface OrderItemProps {
@@ -98,7 +89,8 @@ const OrderItem = ({ item }: OrderItemProps) => {
         enableTrackpadTwoFingerGesture
         rightThreshold={40}
         renderRightActions={RightAction}
-        onSwipeableWillOpen={onSwipeableOpen}>
+        onSwipeableWillOpen={onSwipeableOpen}
+      >
         <View style={styles.orderItem}>
           <View style={styles.quantityControl}>
             <Text style={styles.quantityText}>{item.quantity}</Text>
