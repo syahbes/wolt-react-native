@@ -106,4 +106,4 @@ https://icons.expo.app
 
 do Haptic on JS thread and not UI import { scheduleOnRN } from 'react-native-worklets';
 
-test
+tes
