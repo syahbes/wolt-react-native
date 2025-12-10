@@ -75,6 +75,9 @@ const Layout = () => {
           sheetAllowedDetents: [0.95],
           sheetCornerRadius: 16,
           sheetGrabberVisible: true,
+          contentStyle: {
+            backgroundColor: Colors.background,
+          },
         }}
       />
     </Stack>
