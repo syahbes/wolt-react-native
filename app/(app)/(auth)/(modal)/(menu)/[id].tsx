@@ -18,14 +18,8 @@ const Page = () => {
 
   const addonOptions = [
     { id: 'yogurt', label: 'With mild yogurt', price: 0 },
-    { id: 'ydogurt', label: 'With mild yogurt', price: 0 },
-    { id: 'syogurt', label: 'With mild yogurt', price: 0 },
     { id: 'exftra-spicy', label: 'Extra spicy', price: 0 },
     { id: 'extfra-sauce', label: 'Extra sauce', price: 0.5 },
-    { id: 'extrffa-spicy', label: 'Extra spicy', price: 0 },
-    { id: 'extra-sauce', label: 'Extra sauce', price: 0.5 },
-    { id: 'extsssa-spicy', label: 'Extra spicy', price: 0 },
-    { id: 'extra-saufe', label: 'Extra sauce', price: 0.5 },
   ];
 
   if (isLoading) {
@@ -67,10 +61,7 @@ const Page = () => {
         </TouchableOpacity>
 
         {/* Scrollable Content */}
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{ flex: 1 }}
-          contentContainerStyle={{ paddingBottom: 20 }}>
+        <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 20 }}>
           {/* Dish Image */}
           <View style={styles.imageContainer}>
             <Image source={dish.image!} style={styles.image} />

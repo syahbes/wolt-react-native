@@ -1,5 +1,6 @@
 import { MenuItem } from '@/components/MenuItem';
 import RestaurantDetailsHeader from '@/components/RestaurantDetailsHeader';
+import ViewOrderButton from '@/components/buttons/ViewOrderButton';
 import { Colors } from '@/constants/theme';
 import type { Dish } from '@/data/restaurant_menu';
 import { useMenu } from '@/hooks/useMenu';
@@ -28,15 +29,16 @@ const Page = () => {
   const insets = useSafeAreaInsets();
   const categoryTabWidth = 100;
 
-  //fetch data
+  // Fetch data
   const { data: restaurant, isLoading: restaurantLoading } = useRestaurant(id || '');
   const { data: menu, isLoading: menuLoading } = useMenu(id || '');
 
-  const sections = (menu ?? []).map((category) => ({
-    title: category.category,
-    subtitle: category.subtitle,
-    data: category.dishes,
-  }));
+  const sections =
+    menu?.map((category) => ({
+      title: category.category,
+      subtitle: category.subtitle,
+      data: category.dishes,
+    })) || [];
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -46,11 +48,14 @@ const Page = () => {
 
   const parallaxStyle = useAnimatedStyle(() => {
     const scale = interpolate(scrollOffset.value, [-100, 0], [1.5, 1], Extrapolation.CLAMP);
+
     const translateY = interpolate(scrollOffset.value, [0, 400], [0, -150], Extrapolation.CLAMP);
+
     return {
       transform: [{ scale }, { translateY }],
     };
   });
+
   const overlayStyle = useAnimatedStyle(() => {
     const opacity = interpolate(scrollOffset.value, [0, 70], [0, 1], Extrapolation.CLAMP);
 
@@ -67,6 +72,7 @@ const Page = () => {
       animated: true,
       viewOffset: insets.top + 100,
     });
+
     scrollCategoryTabIntoView(index);
   };
 
@@ -93,6 +99,7 @@ const Page = () => {
 
   const stickyTabsStyle = useAnimatedStyle(() => {
     const opacity = interpolate(scrollOffset.value, [STICKY_THRESHOLD_START, STICKY_THRESHOLD_END], [0, 1], Extrapolation.CLAMP);
+
     return {
       opacity,
     };
@@ -105,30 +112,30 @@ const Page = () => {
       </View>
     );
   }
+
   if (!restaurant) {
     return (
       <View>
-        <Text>Resturant not found</Text>
+        <Text>Restaurant not found</Text>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Animated.Image resizeMode={'cover'} source={restaurant.image!} style={[styles.backgroundImage, parallaxStyle]} />
+      <Animated.Image style={[styles.backgroundImage, parallaxStyle]} resizeMode={'cover'} source={restaurant.image!} />
       <Animated.View style={[styles.whiteOverlay, overlayStyle]} />
       <View style={{ zIndex: 10 }}>
         <RestaurantDetailsHeader scrollOffset={scrollOffset} />
       </View>
-
       <Animated.View style={[styles.stickyTabsOverlay, stickyTabsStyle, { top: insets.top + 64 }]}>
         <View style={styles.categoryTabsContainer}>
           <ScrollView horizontal ref={categoryScrollRef} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoryTabs}>
             {menu?.map((category, index) => (
               <TouchableOpacity
                 key={`sticky-${index}`}
-                style={[styles.categoryTab, activeCategory === index && styles.categoryTabActive]}
                 onPress={() => handleCategoryPress(index)}
+                style={[styles.categoryTab, activeCategory === index && styles.categoryTabActive]}
               >
                 <Text style={[styles.categoryTabText, activeCategory === index && styles.categoryTabTextActive]}>{category.category}</Text>
               </TouchableOpacity>
@@ -136,7 +143,6 @@ const Page = () => {
           </ScrollView>
         </View>
       </Animated.View>
-
       <AnimatedSectionList
         ref={sectionListRef}
         sections={sections}
@@ -151,9 +157,11 @@ const Page = () => {
             {section.subtitle && <Text style={styles.sectionSubtitle}>{section.subtitle}</Text>}
           </View>
         )}
+        renderItem={({ item }) => <MenuItem dish={item} />}
         ListHeaderComponent={
           <>
-            <View style={styles.ImageSpacer} />
+            <View style={styles.imageSpacer} />
+
             <View style={styles.whiteContentContainer}>
               <Svg height={30} width={width} viewBox={`0 0 ${width} 30`} style={{ position: 'absolute', top: -29, left: 0 }}>
                 <Path d={`M 0,30 Q ${width / 2},0 ${width},30 L ${width},30 L 0,30 Z`} fill="#fff" />
@@ -201,8 +209,9 @@ const Page = () => {
             </View>
           </>
         }
-        renderItem={({ item }) => <MenuItem dish={item} />}
       />
+
+      <ViewOrderButton restaurant={restaurant} />
     </View>
   );
 };
@@ -210,6 +219,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
+    paddingBottom: 300,
   },
   backgroundImage: {
     position: 'absolute',
@@ -224,6 +234,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
+    width,
     height: IMAGE_HEIGHT,
     backgroundColor: Colors.background,
   },
@@ -240,7 +251,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.muted,
   },
-  ImageSpacer: {
+  imageSpacer: {
     height: IMAGE_HEIGHT - 60,
   },
   whiteContentContainer: {
@@ -261,8 +272,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     borderWidth: 3,
     borderColor: Colors.background,
-    boxShadow: '0px 4px 10px 2px rgba(0,0,0,0.3)',
+    boxShadow: '0px 4px 10px 2px rgba(0, 0, 0, 0.3)',
   },
+
   restaurantInfo: {
     paddingHorizontal: 16,
     alignItems: 'center',
@@ -351,7 +363,7 @@ const styles = StyleSheet.create({
   },
   categoryTabTextActive: {
     color: Colors.secondary,
-    fontWeight: 700,
+    fontWeight: 600,
   },
 });
 export default Page;

@@ -80,6 +80,13 @@ const Layout = () => {
           },
         }}
       />
+      <Stack.Screen
+        name='order'
+        options={{
+          enableTransitions: true,
+          ...Transition.presets.SharedXImage(),
+        }}
+      />
     </Stack>
   );
 };

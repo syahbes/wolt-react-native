@@ -100,3 +100,8 @@ pointerEvents={scrollOffset.value < SCROLL_THRESHOLD \* 0.3 ? 'none' : 'auto'}
 ParallexStyle image scroll
 
 https://icons.expo.app
+
+
+
+ <Reanimated.View style={animatedStyle}>
+      <ReanimatedSwipeable
