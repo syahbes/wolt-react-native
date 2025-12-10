@@ -105,5 +105,3 @@ https://icons.expo.app
 <ReanimatedSwipeable
 
 do Haptic on JS thread and not UI import { scheduleOnRN } from 'react-native-worklets';
-
-tes
